@@ -1,0 +1,764 @@
+# SkillTrace Taxonomy Rules (skills.yaml)
+# Defines skills, aliases, categories, and multi-tier evidence detection patterns
+# Adheres to SRS Section 8.2 and Section 9.2
+
+skills:
+  - skill_id: "sql"
+    name: "SQL"
+    category: "Databases & Storage"
+    aliases:
+      - "SQL"
+      - "Structured Query Language"
+      - "RDBMS"
+      - "Relational Database"
+      - "MySQL"
+      - "PostgreSQL"
+      - "SQLite"
+      - "Database Queries"
+    strong_patterns:
+      file_extensions: [".sql"]
+      code_regex:
+        - "(?i)(SELECT\\s+.*\\s+FROM\\s+\\w+)"
+        - "(?i)(INSERT\\s+INTO\\s+\\w+)"
+        - "(?i)(UPDATE\\s+\\w+\\s+SET)"
+        - "(?i)(DELETE\\s+FROM\\s+\\w+)"
+        - "(?i)(CREATE\\s+TABLE\\s+\\w+)"
+        - "(?i)(ALTER\\s+TABLE\\s+\\w+)"
+        - "(?i)(cursor\\.execute\\s*\\([\"'].*[\"']\\))"
+        - "(?i)(db\\.execute\\s*\\([\"'].*[\"']\\))"
+        - "(?i)(session\\.execute\\s*\\([\"'].*[\"']\\))"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "sqlite3"
+        - "psycopg2"
+        - "psycopg2-binary"
+        - "asyncpg"
+        - "sqlalchemy"
+        - "mysqlclient"
+        - "aiosqlite"
+        - "alembic"
+        - "pg"
+        - "mysql2"
+      file_patterns:
+        - "alembic/versions/*"
+        - "migrations/*"
+        - "tests/test_*db*.py"
+        - "tests/test_*sql*.py"
+    weak_patterns:
+      readme_keywords:
+        - "sql"
+        - "database"
+        - "queries"
+        - "relational"
+
+  - skill_id: "python"
+    name: "Python"
+    category: "Programming Languages"
+    aliases:
+      - "Python"
+      - "Python3"
+      - "Python 3"
+      - "CPython"
+      - "Py"
+    strong_patterns:
+      file_extensions: [".py"]
+      code_regex:
+        - "(def\\s+[a-zA-Z_][a-zA-Z0-9_]*\\s*\\(.*?\\):)"
+        - "(class\\s+[a-zA-Z_][a-zA-Z0-9_]*(?:\\(.*?\\))?:)"
+        - "(if\\s+__name__\\s*==\\s*[\"']__main__[\"']:)"
+        - "(import\\s+[a-zA-Z_][a-zA-Z0-9_]*)"
+        - "(from\\s+[a-zA-Z_][a-zA-Z0-9_]*\\s+import)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "python"
+      file_patterns:
+        - "setup.py"
+        - "pyproject.toml"
+        - "Pipfile"
+        - "requirements.txt"
+        - ".python-version"
+        - "tox.ini"
+    weak_patterns:
+      readme_keywords:
+        - "python"
+        - "pythonic"
+        - "pip"
+
+  - skill_id: "docker"
+    name: "Docker"
+    category: "DevOps & Containers"
+    aliases:
+      - "Docker"
+      - "Containerization"
+      - "Docker Container"
+      - "Dockerfile"
+      - "Docker Compose"
+    strong_patterns:
+      file_names:
+        - "Dockerfile"
+        - "docker-compose.yml"
+        - "docker-compose.yaml"
+        - "compose.yml"
+        - "compose.yaml"
+        - "Dockerfile.dev"
+        - "Dockerfile.prod"
+      code_regex:
+        - "(?i)(FROM\\s+[a-zA-Z0-9_./:-]+(\\s+AS\\s+\\w+)?)"
+        - "(?i)(RUN\\s+.+)"
+        - "(?i)(ENTRYPOINT\\s+\\[.*\\])"
+        - "(?i)(CMD\\s+\\[.*\\])"
+        - "(services:\\s*\\n\\s+[a-zA-Z0-9_-]+:)"
+    corroborating_patterns:
+      file_patterns:
+        - ".dockerignore"
+        - ".github/workflows/*docker*.yml"
+      manifest_dependencies:
+        - "docker"
+    weak_patterns:
+      readme_keywords:
+        - "docker"
+        - "docker-compose"
+        - "container"
+
+  - skill_id: "fastapi"
+    name: "FastAPI"
+    category: "Backend Frameworks"
+    aliases:
+      - "FastAPI"
+      - "Fast API"
+      - "FastAPI framework"
+    strong_patterns:
+      file_extensions: [".py"]
+      code_regex:
+        - "(from\\s+fastapi\\s+import\\s+FastAPI)"
+        - "(import\\s+fastapi)"
+        - "(@[a-zA-Z0-9_]+\\.(get|post|put|delete|patch|options)\\s*\\([\"'].*[\"']\\))"
+        - "(app\\s*=\\s*FastAPI\\s*\\()"
+        - "(APIRouter\\s*\\()"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "fastapi"
+        - "uvicorn"
+        - "starlette"
+      file_patterns:
+        - "tests/test_*api*.py"
+        - "tests/test_*router*.py"
+    weak_patterns:
+      readme_keywords:
+        - "fastapi"
+        - "uvicorn"
+        - "swagger"
+
+  - skill_id: "react"
+    name: "React"
+    category: "Frontend Development"
+    aliases:
+      - "React"
+      - "React.js"
+      - "ReactJS"
+      - "JSX"
+      - "React Hooks"
+    strong_patterns:
+      file_extensions: [".jsx", ".tsx"]
+      code_regex:
+        - "(import\\s+React.*from\\s+['\"]react['\"])"
+        - "(from\\s+['\"]react['\"])"
+        - "(useState\\s*\\(|useEffect\\s*\\(|useContext\\s*\\()"
+        - "(export\\s+default\\s+function\\s+[A-Z][a-zA-Z0-9_]*)"
+        - "(const\\s+[A-Z][a-zA-Z0-9_]*\\s*=\\s*\\(.*\\)\\s*=>\\s*\\{)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "react"
+        - "react-dom"
+        - "react-router-dom"
+        - "@types/react"
+      file_patterns:
+        - "tests/*react*.test.js"
+        - "src/components/*.jsx"
+    weak_patterns:
+      readme_keywords:
+        - "react"
+        - "react.js"
+        - "reactjs"
+
+  - skill_id: "git"
+    name: "Git"
+    category: "Developer Tools"
+    aliases:
+      - "Git"
+      - "Version Control"
+      - "Git Workflows"
+      - "GitHub"
+      - "Git CLI"
+    strong_patterns:
+      file_names:
+        - ".gitignore"
+        - ".gitattributes"
+        - ".gitmodules"
+      code_regex:
+        - "(git\\s+(commit|push|pull|rebase|merge|checkout|branch|clone))"
+    corroborating_patterns:
+      file_patterns:
+        - ".github/workflows/*.yml"
+        - ".github/PULL_REQUEST_TEMPLATE.md"
+        - ".github/CODEOWNERS"
+    weak_patterns:
+      readme_keywords:
+        - "git clone"
+        - "git commit"
+        - "version control"
+
+  - skill_id: "rest_apis"
+    name: "REST APIs"
+    category: "Backend & Web Services"
+    aliases:
+      - "REST"
+      - "RESTful"
+      - "REST API"
+      - "RESTful APIs"
+      - "API Design"
+      - "HTTP Endpoints"
+    strong_patterns:
+      file_extensions: [".py", ".js", ".ts", ".go", ".java"]
+      code_regex:
+        - "(@[a-zA-Z0-9_]+\\.(get|post|put|delete|patch)\\s*\\([\"']/)"
+        - "(router\\.(get|post|put|delete|patch)\\s*\\([\"']/)"
+        - "(app\\.(get|post|put|delete|patch)\\s*\\([\"']/)"
+        - "(requests\\.(get|post|put|delete|patch)\\s*\\()"
+        - "(fetch\\s*\\([\"']https?://)"
+        - "(axios\\.(get|post|put|delete)\\s*\\()"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "requests"
+        - "httpx"
+        - "axios"
+        - "flask-restful"
+        - "django-rest-framework"
+        - "djangorestframework"
+      file_patterns:
+        - "openapi.json"
+        - "swagger.yaml"
+        - "swagger.json"
+    weak_patterns:
+      readme_keywords:
+        - "rest api"
+        - "restful"
+        - "endpoints"
+        - "http api"
+
+  - skill_id: "unit_testing"
+    name: "Unit Testing & QA"
+    category: "Testing & Quality Assurance"
+    aliases:
+      - "Unit Testing"
+      - "Automated Testing"
+      - "Pytest"
+      - "Jest"
+      - "Test-Driven Development"
+      - "TDD"
+      - "Test Automation"
+    strong_patterns:
+      file_extensions: [".py", ".js", ".ts"]
+      file_patterns:
+        - "test_*.py"
+        - "*_test.py"
+        - "*.test.js"
+        - "*.test.ts"
+        - "*.spec.js"
+        - "*.spec.ts"
+      code_regex:
+        - "(def\\s+test_[a-zA-Z0-9_]+\\s*\\(.*?\\):)"
+        - "(class\\s+Test[a-zA-Z0-9_]*(?:\\(.*?\\))?:)"
+        - "(assert\\s+.+)"
+        - "(test\\s*\\([\"'].*[\"'],\\s*\\(.*?\\)\\s*=>)"
+        - "(it\\s*\\([\"'].*[\"'],\\s*\\(.*?\\)\\s*=>)"
+        - "(expect\\(.*\\)\\.to)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "pytest"
+        - "pytest-cov"
+        - "pytest-asyncio"
+        - "unittest"
+        - "mock"
+        - "jest"
+        - "mocha"
+        - "chai"
+      file_patterns:
+        - "pytest.ini"
+        - "jest.config.js"
+        - ".coveragerc"
+    weak_patterns:
+      readme_keywords:
+        - "pytest"
+        - "unit tests"
+        - "test suite"
+        - "coverage"
+
+  - skill_id: "ci_cd"
+    name: "CI/CD & Automation"
+    category: "DevOps & Containers"
+    aliases:
+      - "CI/CD"
+      - "Continuous Integration"
+      - "Continuous Deployment"
+      - "GitHub Actions"
+      - "Pipeline"
+    strong_patterns:
+      file_patterns:
+        - ".github/workflows/*.yml"
+        - ".github/workflows/*.yaml"
+        - ".gitlab-ci.yml"
+        - "Jenkinsfile"
+        - ".circleci/config.yml"
+      code_regex:
+        - "(name:\\s*.*\\n\\s*on:)"
+        - "(jobs:\\s*\\n\\s+[a-zA-Z0-9_-]+:)"
+        - "(steps:\\s*\\n\\s+-\\s+uses:)"
+    corroborating_patterns:
+      file_patterns:
+        - ".pre-commit-config.yaml"
+    weak_patterns:
+      readme_keywords:
+        - "ci/cd"
+        - "github actions"
+        - "build pipeline"
+
+  - skill_id: "typescript"
+    name: "TypeScript"
+    category: "Programming Languages"
+    aliases:
+      - "TypeScript"
+      - "TS"
+      - "TSX"
+    strong_patterns:
+      file_extensions: [".ts", ".tsx"]
+      code_regex:
+        - "(interface\\s+[A-Z][a-zA-Z0-9_]*\\s*\\{)"
+        - "(type\\s+[A-Z][a-zA-Z0-9_]*\\s*=\\s*)"
+        - "(const\\s+[a-zA-Z0-9_]+:\\s*[A-Z][a-zA-Z0-9_]*\\s*=)"
+        - "(function\\s+[a-zA-Z0-9_]+\\(.*\\):\\s*[a-zA-Z0-9_<>\\[\\]]+\\s*\\{)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "typescript"
+        - "ts-node"
+        - "@types/node"
+      file_patterns:
+        - "tsconfig.json"
+    weak_patterns:
+      readme_keywords:
+        - "typescript"
+        - "strongly typed"
+
+  - skill_id: "javascript"
+    name: "JavaScript"
+    category: "Programming Languages"
+    aliases:
+      - "JavaScript"
+      - "JS"
+      - "ES6"
+      - "ECMAScript"
+    strong_patterns:
+      file_extensions: [".js", ".mjs"]
+      code_regex:
+        - "(const\\s+[a-zA-Z0-9_]+\\s*=\\s*\\(.*\\)\\s*=>)"
+        - "(function\\s+[a-zA-Z0-9_]+\\s*\\(.*?\\)\\s*\\{)"
+        - "(export\\s+(default\\s+)?(function|class|const))"
+        - "(import\\s+.*\\s+from\\s+['\"].*['\"])"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "eslint"
+        - "prettier"
+      file_patterns:
+        - "package.json"
+        - ".eslintrc.js"
+    weak_patterns:
+      readme_keywords:
+        - "javascript"
+        - "frontend"
+        - "web app"
+
+  - skill_id: "postgresql"
+    name: "PostgreSQL"
+    category: "Databases & Storage"
+    aliases:
+      - "PostgreSQL"
+      - "Postgres"
+      - "pg"
+      - "psql"
+    strong_patterns:
+      file_extensions: [".sql", ".py"]
+      code_regex:
+        - "(?i)(postgresql://[a-zA-Z0-9_:@./]+)"
+        - "(?i)(psycopg2\\.connect)"
+        - "(?i)(asyncpg\\.create_pool)"
+        - "(?i)(CREATE\\s+EXTENSION\\s+IF\\s+NOT\\s+EXISTS)"
+        - "(?i)(SELECT\\s+.*\\s+FROM\\s+.*ILIKE)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "psycopg2"
+        - "psycopg2-binary"
+        - "asyncpg"
+        - "pg"
+      file_patterns:
+        - "*postgres*"
+    weak_patterns:
+      readme_keywords:
+        - "postgresql"
+        - "postgres"
+
+  - skill_id: "mongodb"
+    name: "MongoDB"
+    category: "Databases & Storage"
+    aliases:
+      - "MongoDB"
+      - "Mongo"
+      - "NoSQL"
+      - "Mongoose"
+    strong_patterns:
+      file_extensions: [".py", ".js", ".ts"]
+      code_regex:
+        - "(MongoClient\\s*\\()"
+        - "(mongoose\\.connect\\s*\\()"
+        - "(\\.(find|findOne|insertOne|insertMany|updateOne|aggregate)\\s*\\(\\{)"
+        - "(new\\s+Schema\\s*\\(\\{)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "pymongo"
+        - "motor"
+        - "mongoose"
+        - "mongodb"
+    weak_patterns:
+      readme_keywords:
+        - "mongodb"
+        - "nosql"
+
+  - skill_id: "redis"
+    name: "Redis"
+    category: "Databases & Storage"
+    aliases:
+      - "Redis"
+      - "Caching"
+      - "In-Memory Store"
+      - "Key-Value Store"
+    strong_patterns:
+      file_extensions: [".py", ".js", ".ts"]
+      code_regex:
+        - "(redis\\.Redis\\s*\\()"
+        - "(aioredis\\.from_url\\s*\\()"
+        - "(createClient\\s*\\(\\))"
+        - "(\\.(get|set|setex|hget|hset|publish|subscribe)\\s*\\([\"'].*[\"']\\))"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "redis"
+        - "aioredis"
+        - "ioredis"
+    weak_patterns:
+      readme_keywords:
+        - "redis"
+        - "cache"
+        - "caching"
+
+  - skill_id: "pydantic"
+    name: "Pydantic"
+    category: "Backend & Web Services"
+    aliases:
+      - "Pydantic"
+      - "Data Validation"
+      - "BaseModel"
+    strong_patterns:
+      file_extensions: [".py"]
+      code_regex:
+        - "(from\\s+pydantic\\s+import\\s+BaseModel)"
+        - "(import\\s+pydantic)"
+        - "(class\\s+[a-zA-Z0-9_]+\\s*\\(\\s*BaseModel\\s*\\):)"
+        - "(Field\\s*\\(default=)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "pydantic"
+        - "pydantic-settings"
+        - "pydantic-core"
+    weak_patterns:
+      readme_keywords:
+        - "pydantic"
+        - "validation"
+
+  - skill_id: "django"
+    name: "Django"
+    category: "Backend Frameworks"
+    aliases:
+      - "Django"
+      - "Django ORM"
+      - "Django REST framework"
+      - "DRF"
+    strong_patterns:
+      file_names:
+        - "manage.py"
+        - "wsgi.py"
+        - "asgi.py"
+      file_extensions: [".py"]
+      code_regex:
+        - "(from\\s+django\\.)"
+        - "(import\\s+django)"
+        - "(class\\s+[a-zA-Z0-9_]+\\s*\\(\\s*models\\.Model\\s*\\):)"
+        - "(urlpatterns\\s*=\\s*\\[)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "django"
+        - "djangorestframework"
+      file_patterns:
+        - "*/settings.py"
+        - "*/urls.py"
+    weak_patterns:
+      readme_keywords:
+        - "django"
+        - "django rest framework"
+
+  - skill_id: "flask"
+    name: "Flask"
+    category: "Backend Frameworks"
+    aliases:
+      - "Flask"
+      - "Flask framework"
+    strong_patterns:
+      file_extensions: [".py"]
+      code_regex:
+        - "(from\\s+flask\\s+import\\s+Flask)"
+        - "(app\\s*=\\s*Flask\\s*\\(__name__\\))"
+        - "(@app\\.route\\s*\\([\"'].*[\"']\\))"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "flask"
+        - "werkzeug"
+        - "flask-cors"
+    weak_patterns:
+      readme_keywords:
+        - "flask"
+        - "microframework"
+
+  - skill_id: "nodejs"
+    name: "Node.js"
+    category: "Backend & Web Services"
+    aliases:
+      - "Node.js"
+      - "NodeJS"
+      - "Node"
+      - "Express"
+      - "Express.js"
+    strong_patterns:
+      file_extensions: [".js", ".ts"]
+      code_regex:
+        - "(require\\s*\\(['\"]express['\"]\\))"
+        - "(import\\s+express\\s+from\\s+['\"]express['\"])"
+        - "(const\\s+app\\s*=\\s*express\\(\\))"
+        - "(app\\.listen\\s*\\(\\d+)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "express"
+        - "dotenv"
+        - "cors"
+      file_patterns:
+        - "package.json"
+    weak_patterns:
+      readme_keywords:
+        - "nodejs"
+        - "node.js"
+        - "express"
+
+  - skill_id: "html_css"
+    name: "HTML5 & CSS3"
+    category: "Frontend Development"
+    aliases:
+      - "HTML"
+      - "HTML5"
+      - "CSS"
+      - "CSS3"
+      - "Styling"
+      - "Responsive Design"
+    strong_patterns:
+      file_extensions: [".html", ".css", ".scss", ".sass"]
+      code_regex:
+        - "(<!DOCTYPE\\s+html>)"
+        - "(<html.*>)"
+        - "(@media\\s*\\(.*\\)\\s*\\{)"
+        - "(@keyframes\\s+[a-zA-Z0-9_-]+)"
+        - "(:root\\s*\\{)"
+    corroborating_patterns:
+      file_patterns:
+        - "index.html"
+        - "styles.css"
+        - "style.css"
+    weak_patterns:
+      readme_keywords:
+        - "html5"
+        - "css3"
+        - "responsive design"
+
+  - skill_id: "linux_bash"
+    name: "Linux & Shell Scripting"
+    category: "DevOps & Cloud"
+    aliases:
+      - "Linux"
+      - "Bash"
+      - "Shell"
+      - "Shell Scripting"
+      - "Unix"
+      - "Command Line"
+    strong_patterns:
+      file_extensions: [".sh", ".bash", ".zsh"]
+      code_regex:
+        - "(^#!/bin/(ba)?sh)"
+        - "(^#!/usr/bin/env\\s+(ba)?sh)"
+        - "(chmod\\s+[0-9]{3})"
+        - "(echo\\s+[\"'].*[\"']\\s*>)"
+    corroborating_patterns:
+      file_patterns:
+        - "scripts/*.sh"
+        - "bin/*.sh"
+    weak_patterns:
+      readme_keywords:
+        - "bash script"
+        - "linux"
+        - "shell command"
+
+  - skill_id: "data_analysis"
+    name: "Data Analysis"
+    category: "Data & AI"
+    aliases:
+      - "Data Analysis"
+      - "Pandas"
+      - "NumPy"
+      - "Data Science"
+      - "Data Processing"
+    strong_patterns:
+      file_extensions: [".py", ".ipynb"]
+      code_regex:
+        - "(import\\s+pandas\\s+as\\s+pd)"
+        - "(import\\s+numpy\\s+as\\s+np)"
+        - "(pd\\.read_csv\\s*\\()"
+        - "(pd\\.DataFrame\\s*\\()"
+        - "(np\\.array\\s*\\()"
+        - "(\\.(groupby|merge|pivot_table|describe)\\s*\\()"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "pandas"
+        - "numpy"
+        - "scipy"
+        - "matplotlib"
+        - "seaborn"
+    weak_patterns:
+      readme_keywords:
+        - "data analysis"
+        - "pandas dataframe"
+        - "numpy"
+
+  - skill_id: "machine_learning"
+    name: "Machine Learning"
+    category: "Data & AI"
+    aliases:
+      - "Machine Learning"
+      - "ML"
+      - "Deep Learning"
+      - "Scikit-Learn"
+      - "PyTorch"
+      - "TensorFlow"
+    strong_patterns:
+      file_extensions: [".py", ".ipynb"]
+      code_regex:
+        - "(from\\s+sklearn\\.)"
+        - "(import\\s+torch)"
+        - "(import\\s+tensorflow\\s+as\\s+tf)"
+        - "(model\\.fit\\s*\\()"
+        - "(model\\.predict\\s*\\()"
+        - "(nn\\.Module)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "scikit-learn"
+        - "torch"
+        - "torchvision"
+        - "tensorflow"
+        - "keras"
+    weak_patterns:
+      readme_keywords:
+        - "machine learning"
+        - "model training"
+        - "neural network"
+
+  - skill_id: "kubernetes"
+    name: "Kubernetes"
+    category: "DevOps & Containers"
+    aliases:
+      - "Kubernetes"
+      - "k8s"
+      - "Helm"
+      - "K8s Cluster"
+    strong_patterns:
+      file_extensions: [".yaml", ".yml"]
+      code_regex:
+        - "(apiVersion:\\s*apps/v1)"
+        - "(kind:\\s*(Deployment|Service|Ingress|ConfigMap|StatefulSet))"
+        - "(kubectl\\s+(apply|get|delete|describe))"
+    corroborating_patterns:
+      file_patterns:
+        - "k8s/*.yaml"
+        - "helm/Chart.yaml"
+    weak_patterns:
+      readme_keywords:
+        - "kubernetes"
+        - "k8s"
+        - "helm chart"
+
+  - skill_id: "aws"
+    name: "AWS (Amazon Web Services)"
+    category: "DevOps & Cloud"
+    aliases:
+      - "AWS"
+      - "Amazon Web Services"
+      - "S3"
+      - "EC2"
+      - "Lambda"
+      - "CloudFormation"
+    strong_patterns:
+      file_extensions: [".py", ".js", ".ts", ".tf"]
+      code_regex:
+        - "(boto3\\.client\\s*\\(['\"](s3|ec2|lambda|dynamodb)['\"]\\))"
+        - "(boto3\\.resource\\s*\\()"
+        - "(AWS::Serverless::Function)"
+        - "(provider\\s+[\"']aws[\"'])"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "boto3"
+        - "botocore"
+        - "aws-sdk"
+        - "@aws-sdk/client-s3"
+    weak_patterns:
+      readme_keywords:
+        - "aws"
+        - "amazon web services"
+        - "s3 bucket"
+
+  - skill_id: "graphql"
+    name: "GraphQL"
+    category: "Backend & Web Services"
+    aliases:
+      - "GraphQL"
+      - "Apollo"
+      - "GraphQL API"
+    strong_patterns:
+      file_extensions: [".graphql", ".gql", ".py", ".ts", ".js"]
+      code_regex:
+        - "(type\\s+Query\\s*\\{)"
+        - "(type\\s+Mutation\\s*\\{)"
+        - "(gql`[\\s\\S]*?`)"
+        - "(from\\s+strawberry\\s+import)"
+        - "(import\\s+graphene)"
+    corroborating_patterns:
+      manifest_dependencies:
+        - "graphene"
+        - "strawberry-graphql"
+        - "graphql"
+        - "@apollo/client"
+        - "apollo-server"
+    weak_patterns:
+      readme_keywords:
+        - "graphql"
+        - "apollo graphql"

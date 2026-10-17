@@ -1,0 +1,38 @@
+{
+  "ref": "refs/heads/main",
+  "before": "a1b2c3d4e5f678901234567890abcdef12345678",
+  "after": "f9e8d7c6b5a432101234567890abcdef98765432",
+  "repository": {
+    "id": 89201928,
+    "name": "cloud-task-manager",
+    "full_name": "demo-student/cloud-task-manager",
+    "private": false,
+    "owner": {
+      "name": "demo-student",
+      "email": "student@example.edu"
+    },
+    "default_branch": "main"
+  },
+  "pusher": {
+    "name": "demo-student"
+  },
+  "commits": [
+    {
+      "id": "f9e8d7c6b5a432101234567890abcdef98765432",
+      "message": "feat: add SQL schema migrations and PostgreSQL query layer",
+      "timestamp": "2026-10-16T18:30:00Z",
+      "author": {
+        "name": "demo-student",
+        "email": "student@example.edu"
+      },
+      "added": [
+        "db/schema.sql",
+        "app/database.py"
+      ],
+      "removed": [],
+      "modified": [
+        "requirements.txt"
+      ]
+    }
+  ]
+}
